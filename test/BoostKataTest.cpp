@@ -40,6 +40,11 @@ TEST(Boost_Filesystem, StatusQueryIsRegularFile){
    CHECK_TRUE(is_regular_file(p));
 }
 
+TEST(Boost_Filesystem, StatusQueryFileSize){
+   char const *p = "../.gitignore";
+   CHECK_EQUAL(295, file_size(p));
+}
+
 TEST(Boost_Filesystem, TestExistence){
    char const *ps = "../.git";
    path p(ps);
