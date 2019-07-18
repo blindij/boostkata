@@ -13,16 +13,17 @@ using namespace boost::filesystem;
 
 TEST_GROUP(Boost_Filesystem){
    std::ostringstream outstr;
+   char const *ps = "../.gitignore";
    std::vector<path> v;
    void setup(){
+      cout << "Global testfile: " << ps << std::endl;
    }
    void teardown(){
    }
 };
 
 TEST(Boost_Filesystem, StatusQueryExists){
-   char const *p = "../.gitignore";
-   CHECK_TRUE(exists(p));
+   CHECK_TRUE(exists(ps));
 }
 
 TEST(Boost_Filesystem, StatusQueryNotExists){
@@ -36,13 +37,11 @@ TEST(Boost_Filesystem, StatusQueryNotIsRegularFile){
 }
 
 TEST(Boost_Filesystem, StatusQueryIsRegularFile){
-   char const *p = "../.gitignore";
-   CHECK_TRUE(is_regular_file(p));
+   CHECK_TRUE(is_regular_file(ps));
 }
 
 TEST(Boost_Filesystem, StatusQueryFileSize){
-   char const *p = "../.gitignore";
-   CHECK_EQUAL(295, file_size(p));
+   CHECK_EQUAL(295, file_size(ps));
 }
 
 TEST(Boost_Filesystem, TestExistence){
