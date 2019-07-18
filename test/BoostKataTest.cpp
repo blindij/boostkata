@@ -14,9 +14,9 @@ using namespace boost::filesystem;
 TEST_GROUP(Boost_Filesystem){
    std::ostringstream outstr;
    char const *ps = "../.gitignore";
+   char const *ps2 = "../.git";
    std::vector<path> v;
    void setup(){
-      cout << "Global testfile: " << ps << std::endl;
    }
    void teardown(){
    }
@@ -45,14 +45,12 @@ TEST(Boost_Filesystem, StatusQueryFileSize){
 }
 
 TEST(Boost_Filesystem, TestExistence){
-   char const *ps = "../.git";
-   path p(ps);
+   path p(ps2);
    CHECK_TRUE(is_directory(p));
 }
 
 TEST(Boost_Filesystem, TestContents){
-   char const *ps = "../.git";
-   path p(ps);
+   path p(ps2);
    if (is_directory(p)){
       for (auto x : directory_iterator(p))
          v.push_back(x.path());
