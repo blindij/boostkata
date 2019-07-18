@@ -21,6 +21,9 @@ add_library (boostkata STATIC ${productionSources})
 target_include_directories (boostkata PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 file (GLOB testSources test/*.cpp)
+add_executable(boostkata.x ${productionSources})
+target_link_libraries(boostkata.x Boost::filesystem)
+
 add_executable (boostkatatest ${testSources})
 target_link_libraries (boostkatatest boostkata CppUTest CppUTestExt
 Boost::filesystem)
