@@ -33,3 +33,6 @@
 
 # Vim editor
 *.sw[op]
+
+# DS_store
+.DS_Store
