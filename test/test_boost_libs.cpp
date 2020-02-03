@@ -37,3 +37,11 @@ TEST_CASE("Catch Boost Any","[catch]"){
     some_values.push_back(c_str);
     REQUIRE_THROWS_AS(boost::any_cast<std::string&>(some_values.back()),boost::bad_any_cast);
 }
+
+TEST_CASE("Get value form boost::any, second approach","[second]"){
+    std::ostringstream myout;
+    boost::any variable(std::string("Hello world!"));
+    std::string* s2 = boost::any_cast<std::string>(&variable);
+    myout << *s2;
+    REQUIRE( myout.str() == "Hello world!" );
+}
