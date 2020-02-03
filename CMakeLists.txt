@@ -62,18 +62,18 @@ add_test(
 # add_test (Unit boostkatatest)
 
 
-# # Generate the tags file
-# file (GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
-# set_source_files_properties(TAGS PROPERTIES GENERATED true)
-# add_custom_target(tags
-#   COMMAND etags --language=c++ --declarations --ignore-indentation
-#   ${productionSources} ${testSources} ${headers}
-#   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+# Generate the tags file
+ file (GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
+ set_source_files_properties(TAGS PROPERTIES GENERATED true)
+ add_custom_target(tags
+   COMMAND etags --language=c++ --declarations --ignore-indentation
+   ${productionSources} ${testSources} ${headers}
+   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
 
-# # And a custom target as a convenience for running "make unit" as a
-# # specific target to support the TDD cycle
-# add_custom_target(unit
-#   COMMAND ${CMAKE_BINARY_DIR}/boostkatatest -c
-#  DEPENDS boostkatatest  tags )
+# And a custom target as a convenience for running "make unit" as a
+# specific target to support the TDD cycle
+ add_custom_target(unit
+   COMMAND ${CMAKE_BINARY_DIR}/testboost.x
+  DEPENDS testboost.x tags )
 #
