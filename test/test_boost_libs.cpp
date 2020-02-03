@@ -25,6 +25,11 @@ TEST_CASE("Boost Any","[bany]"){
     REQUIRE( myout.str() == "Wow! That is great!\n" );
 }
 
+TEST_CASE("Boost Any, but empty","[empty]"){
+    std::vector<boost::any> some_values;
+    REQUIRE( some_values.empty());
+}
+
 TEST_CASE("Catch Boost Any","[catch]"){
     std::ostringstream myout;
     std::vector<boost::any> some_values;
