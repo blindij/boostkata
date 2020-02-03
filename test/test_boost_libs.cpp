@@ -25,5 +25,10 @@ TEST_CASE("Boost Any","[bany]"){
     REQUIRE( myout.str() == "Wow! That is great!\n" );
 }
 
-    // const char* c_str = "Hello there!";
-    // some_values.push_back(c_str);
+TEST_CASE("Catch Boost Any","[catch]"){
+    std::ostringstream myout;
+    std::vector<boost::any> some_values;
+    const char* c_str = "Hello there!";
+    some_values.push_back(c_str);
+    REQUIRE_THROWS_AS(boost::any_cast<std::string&>(some_values.back()),boost::bad_any_cast);
+}
