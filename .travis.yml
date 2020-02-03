@@ -1,0 +1,9 @@
+language:
+ - cpp
+dist: xenial
+before_script:
+   - cmake -S . -B.build -DTESTS=TRUE
+script:
+   - cd .build
+   - make 
+   - ctest
