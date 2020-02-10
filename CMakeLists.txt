@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(recipe-02 LANGUAGES CXX)
+project(boostkata LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -12,7 +12,8 @@ set(STAGED_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/stage)
 message(STATUS "${PROJECT_NAME} staged install: ${STAGED_INSTALL_PREFIX}")
 
 list(APPEND BOOST_COMPONENTS_REQUIRED program_options system)
-set(Boost_MINIMUM_REQUIRED 1.61)
+# set(Boost_MINIMUM_REQUIRED 1.61)
+set(Boost_MINIMUM_REQUIRED 1.72)
 
 add_subdirectory(external/upstream)
 
@@ -36,3 +37,6 @@ ExternalProject_Add(${PROJECT_NAME}_core
   INSTALL_COMMAND
     ""
   )
+
+  # Add Catch2
+  add_subdirectory(lib/Catch2)

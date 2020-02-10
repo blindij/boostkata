@@ -4,7 +4,7 @@ if(Boost_FOUND)
   message(STATUS "Found Boost version ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
   add_library(boost_external INTERFACE)
 else()
-  message(STATUS "Boost ${Boost_MINIMUM_REQUIRED} could not be located, Building Boost 1.61.0 instead.")
+  message(STATUS "Boost ${Boost_MINIMUM_REQUIRED} could not be located, Building Boost 1.72.0 instead.")
 
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     if(APPLE)
