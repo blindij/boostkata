@@ -12,8 +12,8 @@ set(STAGED_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/stage)
 message(STATUS "${PROJECT_NAME} staged install: ${STAGED_INSTALL_PREFIX}")
 
 list(APPEND BOOST_COMPONENTS_REQUIRED program_options system)
-# set(Boost_MINIMUM_REQUIRED 1.61)
-set(Boost_MINIMUM_REQUIRED 1.72)
+ set(Boost_MINIMUM_REQUIRED 1.61)
+#set(Boost_MINIMUM_REQUIRED 1.72)
 
 add_subdirectory(external/upstream)
 
@@ -38,5 +38,37 @@ ExternalProject_Add(${PROJECT_NAME}_core
     ""
   )
 
-  # Add Catch2
-  add_subdirectory(lib/Catch2)
+# Add Catch2
+add_subdirectory(lib/Catch2)
+
+# Add subdirectory test
+# add_subdirectory(test)
+
+# --------
+add_executable(testboost.x test/test_boost_libs.cpp)
+target_link_libraries(testboost.x Catch2::Catch2)
+enable_testing()
+# add CTest
+#include(CTest)
+#include(Catch)
+#catch_discover_tests(testboost.x)
+
+add_test(
+    NAME catch_discover_test
+    COMMAND $<TARGET_FILE:testboost.x> --success
+)
+
+# Generate the tags file
+file (GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hpp)
+set_source_files_properties(TAGS PROPERTIES GENERATED true)
+add_custom_target(tags
+  COMMAND etags --language=c++ --declarations --ignore-indentation
+  ${productionSources} ${testSources} ${headers}
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+# And a custom target as a convenience for running "make unit" as a specific target to support the TDD cycle
+add_custom_target(unit
+  COMMAND ${CMAKE_BINARY_DIR}/testboost.x
+  DEPENDS testboost.x tags
+)
