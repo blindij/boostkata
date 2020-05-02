@@ -1,5 +1,8 @@
-add_executable(testboost.x test_boost_libs.cpp)
-target_link_libraries(testboost.x Catch2::Catch2)
+add_executable(testboost.x test_boost_libs.cpp test_lexical_cast.cpp)
+target_link_libraries(testboost.x
+                     m # C math library
+                     Catch2::Catch2
+)
 enable_testing()
 # add CTest
 include(CTest)

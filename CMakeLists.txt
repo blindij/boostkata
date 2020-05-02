@@ -5,6 +5,8 @@ project (boostkata-kata LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(BOOST_ROOT "/Users/bjornlin/local/boost_1.72.0")
 set(Catch2_DIR "/Users/bjornlin/local/CMake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/Catch2/contrib")
@@ -31,7 +33,7 @@ add_executable(boostany.x src/boostany.cpp)
 
 # add test 
 # add_subdirectory(test)
-add_executable(testboost.x test/test_boost_libs.cpp)
+add_executable(testboost.x test/test_boost_libs.cpp test/test_lexical_cast.cpp)
 target_link_libraries(testboost.x Catch2::Catch2)
 enable_testing()
 # add CTest

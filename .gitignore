@@ -36,3 +36,7 @@
 
 # DS_store
 .DS_Store
+
+# Compilation files
+.clangd/
+compile_commands.json
