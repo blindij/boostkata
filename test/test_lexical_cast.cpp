@@ -7,62 +7,29 @@
 #include <iterator>
 #include <set>
 #include <boost/lexical_cast.hpp>
+#include <boost/fusion/include/for_each.hpp>
+#include <boost/fusion/adapted/boost_tuple.hpp>
+#include <boost/fusion/adapted/std_pair.hpp>
+#include <boost/variant.hpp>
+#include "BoostKata.hpp"
 
-struct bad_hmean {
-   private:
-      double v1;
-      double v2;
-   public:
-      bad_hmean(double a = 0, double b = 0) : v1(a), v2(b){}
-      void mesg();
-};
 
-inline void bad_hmean::mesg(){
-   std::cout << "hmean(" << v1 << ", " << v2 << "):"
-               << "invalid arguments: a = -b\n";
+TEST_CASE("Converts value of Boost.Variant","[lexical_cast][longdouble]"){
+   boost::variant<char, int, std::string> v1('0'), v2("10.0001"), v3(1);
+   const long double sum = to_long_double(v1) + to_long_double(v2) + to_long_double(v3);
+   REQUIRE(11 < sum);
+   REQUIRE(sum < 11.1);
 }
 
-struct bad_gmean {
-   public:
-      double v1;
-      double v2;
-      bad_gmean(double a = 0, double b = 0) :v1(a), v2(b){}
-      const char * mesg();
-};
-
-inline const char * bad_gmean::mesg() {
-   return "gmean() arguments shoulb be >= 0\n";
+TEST_CASE("Convert sequence into string","[lexical_cast][sequnece]"){
+   boost::tuple<char, int, char, int> decim('-', 10, 'e', 5);
+   REQUIRE(stringize(decim) == "-10e5");
 }
 
-
-template <class ContainerT>
-std::vector<long int> container_to_longs(const ContainerT& container) {
-   typedef typename ContainerT::value_type value_type;
-   std::vector<long int> ret;
-   typedef long int (*func_t)(const value_type&);
-   func_t f = &boost::lexical_cast<long int, value_type>;
-   std::transform(container.begin(), container.end(), std::back_inserter(ret),f);
-   return ret;
-}
-
-double hmean(double a, double b){
-   if (a == -b) {
-      throw "bad hmean() arguments: a = -b not allowd";
-   }
-   return 2.0 * a * b/ (a + b);
-}
-
-double gmean(double a, double b) {
-   throw bad_gmean(a,b);
-   return std::sqrt(a * b);
-}
-
-TEST_CASE("testing hmean throwing object","[lexical_cast][hmean][object]"){
-   REQUIRE_THROWS_AS(throw bad_gmean(), bad_gmean);
-}
-
-TEST_CASE("testing may own throw","[lexical_cast][hmean]"){
-   REQUIRE_THROWS( hmean(10, -10));
+TEST_CASE("User defined type","[leical_cast][user]"){
+   negative_number n(1);
+   n = boost::lexical_cast<negative_number>("-100");
+   REQUIRE(n.value_without_sign() == 100);
 }
 
 TEST_CASE("testing exeption thrown when the input is wrong]","[lexcial_cast],[exception],[syntax]"){
@@ -78,6 +45,18 @@ TEST_CASE("Assert that a short int is not assigned a large value","[lexical_cast
       // on x86 short usually may not store values greater than 32767
       //assert(false); // Must not reach this
 }
+
+// 
+// ----- Converting numbers to strings -----
+//
+TEST_CASE(""){
+   std::string s = boost::lexical_cast<std::string>(100);
+   REQUIRE( s == "100");
+}
+
+//
+//  ----- Converting strings to numbers ---
+//
 
 TEST_CASE("Convert localized number","[lexical_cast],[Norway]"){
    std::locale::global(std::locale("ru_RU.UTF-8"));

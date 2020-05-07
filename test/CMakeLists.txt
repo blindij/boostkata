@@ -1,15 +1,8 @@
-add_executable(testboost.x test_boost_libs.cpp test_lexical_cast.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_executable(testboost.x test_main.cpp test_boost_libs.cpp test_lexical_cast.cpp)
 target_link_libraries(testboost.x
                      m # C math library
-                     Catch2::Catch2
+                     boost_kata
 )
-enable_testing()
-# add CTest
-include(CTest)
-include(Catch)
-catch_discover_tests(testboost.x)
 
-add_test(
-    NAME catch_discover_test
-    COMMAND $<TARGET_FILE:testboost.x> --success
-)
