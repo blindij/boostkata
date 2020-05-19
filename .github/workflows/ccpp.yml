@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: cmake-configure
-      uses: snickerbockers/cmake-configure@prerel1
     - name: run-cmake
       uses: lukka/run-cmake@v2.5
     - name: make
