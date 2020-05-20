@@ -1,7 +1,6 @@
 //
 // Created by Bjørn Lindi on 2020-01-31.
 //
-#define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
 #include <boost/any.hpp>
 #include <boost/variant.hpp>
@@ -9,11 +8,6 @@
 #include <string>
 #include <vector>
 
-TEST_CASE("Hello World","[hw]"){
-    std::ostringstream myout;
-    myout << "Hello World!" << std::endl;
-    REQUIRE( myout.str() == "Hello World!\n");
-}
 
 TEST_CASE("Boost Any","[bany]"){
     std::ostringstream myout;
