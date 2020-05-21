@@ -23,3 +23,10 @@ add_subdirectory(src)
 # ---- add subdirectory with tests ----
 add_subdirectory(test)
 
+
+enable_testing()
+
+add_test(
+   NAME test_boost
+   COMMAND $<TARGET_FILE:testboost.x>
+)

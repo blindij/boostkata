@@ -9,4 +9,3 @@ target_link_libraries(testboost.x
                      m # C math library
                      boost_kata
 )
-
