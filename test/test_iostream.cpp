@@ -1,10 +1,20 @@
 #include "catch2/catch.hpp"
 #include "iostreams/example/container_device.hpp"
 
+using namespace std;
+namespace io = boost::iostreams;
+namespace ex = boost::iostreams::example;
+
+TEST_CASE("Write to container_source","[iostream][write]"){
+   typedef ex::container_sink<string> string_sink;
+   string result;
+   io::stream<string_sink> out(result);
+   out << "Hello_world again!";
+   out.flush();
+   REQUIRE(result == "Hello_world again!");
+}
 
 TEST_CASE("Read from a container_source","[iostream][read]"){
-   namespace io = boost::iostreams;
-   namespace ex = boost::iostreams::example;
    typedef ex::container_source<std::string> string_source;
    std::string                     input = "Hello World!";
    std::string                     output;
