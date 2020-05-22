@@ -1,4 +1,5 @@
 #include "catch2/catch.hpp"
+#include <boost/filesystem.hpp>
 #include "iostreams/example/container_device.hpp"
 
 using namespace std;
@@ -35,8 +36,10 @@ TEST_CASE("Read from a container_source","[iostream][read]"){
 }
 
 TEST_CASE("Write to log.txt","[iostream][log]"){
-   io::stream_buffer<io::file_sink> buf("log.txt");
+   string ps("log.txt");
+   io::stream_buffer<io::file_sink> buf(ps);
    std::ostream out(&buf);
    // out writes to log.txt
    out << "Hello World!\n";
+   REQUIRE(boost::filesystem::exists(ps));
 }

@@ -6,6 +6,7 @@ add_executable(testboost.x
    test_iostream.cpp
 )
 target_link_libraries(testboost.x
+                     Boost::filesystem
                      m # C math library
                      boost_kata
 )

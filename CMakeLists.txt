@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # find Boost
-find_package(Boost 1.72 REQUIRED COMPONENTS program_options)
+find_package(Boost 1.72 REQUIRED COMPONENTS filesystem program_options)
 
 # include project header files including
 # Catch2 which is in subdirectory ./include/catch2
