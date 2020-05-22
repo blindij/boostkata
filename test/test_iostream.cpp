@@ -35,11 +35,3 @@ TEST_CASE("Read from a container_source","[iostream][read]"){
    REQUIRE( input == output);
 }
 
-TEST_CASE("Write to log.txt","[iostream][log]"){
-   string ps("log.txt");
-   io::stream_buffer<io::file_sink> buf(ps);
-   std::ostream out(&buf);
-   // out writes to log.txt
-   out << "Hello World!\n";
-   REQUIRE(boost::filesystem::exists(ps));
-}

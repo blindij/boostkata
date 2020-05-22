@@ -30,3 +30,8 @@ add_test(
    NAME test_boost
    COMMAND $<TARGET_FILE:testboost.x>
 )
+
+add_test(
+   NAME test_boost_iostream
+   COMMAND $<TARGET_FILE:test_boost_iostream.x>
+)
