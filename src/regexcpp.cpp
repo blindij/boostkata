@@ -13,3 +13,8 @@ const std::string re_show(const std::string &pat, const std::string &s) {
     boost::regex reg(pat, boost::regex::perl);
     return boost::regex_replace(s, reg, "{$0}");
 }
+
+const std::string re_dictword(const std::string &pat, const std::string &s) {
+    boost::regex reg(pat, boost::regex::perl);
+    return boost::regex_replace(s, reg, "${1}");
+}

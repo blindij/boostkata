@@ -60,5 +60,10 @@ TEST_CASE("use pluss","[intermediate][pluss]"){
                                     "ABCCD\n"
                                     "AAABBBC\n");
 }
+
+TEST_CASE("match first word in sentence","[gloser][word]"){
+   std::string  result("palpable (adj) that is easily noticed by the mind or senses");
+   REQUIRE(re_dictword("([a-z]+)( +.*)", result) == "palpable");
+}
 #endif  // REGEXPCPP_TEST_INTERMEDIATE_REGEXP_HPP
 
