@@ -9,65 +9,6 @@
 
 namespace io = boost::iostreams;
 
-class my_device {
-   typedef char                  char_type;
-   typedef io::seekable_device_tag   category;
-
-   std::streamsize read(char* s, std::streamsize n) {
-      // Read up to n characters from the underlying data source
-      // into the buffer s, returning the number of characters
-      // read; return -1 to indicate EOF
-   }
-
-   std::streamsize write(const char* s, std::streamsize n){
-      // Write up to n characters to the underlying
-      // data sink into the buffer s, returning the 
-      // number of characters written
-   }
-
-   io::stream_offset seek(io::stream_offset off, std::ios_base::seekdir way){
-      // Seek to position off and return the new stream
-      // position. The argument way indicates how off is
-      // interpreted:
-      //  - std::ios_base::beg indicates an offset from the 
-      //    sequence beginning
-      //  - std::ios_base::cur indicates an offset from the
-      //    current character position
-      //  - std::ios_base::end indicates an offset from the
-      //    sequence end
-   }
-
-   /* Other members */
-};
-
-class my_source {
-   public:
-      typedef char char_type;
-      typedef io::source_tag category;
-
-      std::streamsize read(char* s, std::streamsize n){
-         // Read up to n characters from the underlying data source
-         // into the buffer s, returning the number of characters
-         // read; return -1  to indicate EOF
-      }
-      
-      /* Other members */
-};
-
-class my_sink {
-   public:
-      typedef char                char_type;
-      typedef io::sink_tag        category;
-
-      std::streamsize write(const char* s, std::streamsize n) {
-         // Write up to n characters to the underlying
-         // data sink into the buffer s, returning the 
-         // number of characters written
-      }
-
-      /* Other members */
-};
-
 namespace boost { namespace iostreams { namespace example {
 
 template <typename Container>
