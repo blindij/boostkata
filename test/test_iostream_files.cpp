@@ -1,5 +1,7 @@
 #include "catch2/catch.hpp"
 #include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <iostream>
 #include <boost/iostreams/stream.hpp>
 #include <boost/filesystem.hpp>
 
@@ -8,8 +10,17 @@ namespace io = boost::iostreams;
 namespace fs = boost::filesystem;
 
 TEST_CASE("Read from gloser.txt","[iostream][fileread]"){
+   // io::filtering_istream in;
+   //
    string ps("gloser.txt");
+   string result;
    REQUIRE(fs::exists(ps));
+   SECTION("Read from the file"){
+      io::stream_buffer<io::file_source> buf(ps);
+      istream                            in(&buf);
+      getline(in,result);
+      REQUIRE( result == "palpable (adj) that is easily noticed by the mind or senses");
+   }
 }
 
 TEST_CASE("Write to log.txt","[iostream][log]"){

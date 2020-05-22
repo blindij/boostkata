@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat > gloser.txt << HERE
-palpable			(adj) that is easily noticed by the mind or senses
+palpable (adj) that is easily noticed by the mind or senses
 parricide (noun) the killing of a parent or other near relative
 penance                         (noun) especially in particular religions, an act that you give yourself to do, or that priest gives you to do in order to show that you are sorry for sth you have done wrong.
 penchant (noun) ~ for sth, a special enjoyment or liking for sth
