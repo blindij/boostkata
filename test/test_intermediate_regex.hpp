@@ -65,5 +65,11 @@ TEST_CASE("match first word in sentence","[gloser][word]"){
    std::string  result("palpable (adj) that is easily noticed by the mind or senses");
    REQUIRE(re_dictword("([a-z]+)( +.*)", result) == "palpable");
 }
+
+TEST_CASE("match the rest of the sentence","[gloser][meaning]"){
+   std::string  result("palpable (adj) that is easily noticed by the mind or senses");
+   REQUIRE(re_dictword("[a-z]+( +.*)", result) == " (adj) that is easily noticed by the mind or senses");
+   
+}
 #endif  // REGEXPCPP_TEST_INTERMEDIATE_REGEXP_HPP
 
