@@ -5,6 +5,17 @@ using namespace std;
 namespace io = boost::iostreams;
 namespace ex = boost::iostreams::example;
 
+TEST_CASE("Using a container device","[iostream][device]"){
+   typedef ex::container_device<string> string_device;
+   string one, two;
+   io::stream<string_device> io(one);
+   io << "Hello World!!!";
+   io.flush();
+   io.seekg(0, BOOST_IOS::beg); // seek to the beginning
+   getline(io, two);
+   REQUIRE( one == two);
+}
+
 TEST_CASE("Write to container_source","[iostream][write]"){
    typedef ex::container_sink<string> string_sink;
    string result;
