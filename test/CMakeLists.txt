@@ -4,6 +4,7 @@ add_executable(testboost.x
    test_main.cpp 
    test_boost_libs.cpp
    test_lexical_cast.cpp
+   test_unordered_set.cpp
 )
 
 target_link_libraries(testboost.x
