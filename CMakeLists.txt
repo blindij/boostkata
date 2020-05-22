@@ -27,6 +27,16 @@ add_subdirectory(test)
 enable_testing()
 
 add_test(
+   NAME setup
+   COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test/setup.sh
+)
+set_tests_properties(
+   setup
+   PROPERTIES
+      FIXTURES_SETUP test_boost_fixtures
+)
+
+add_test(
    NAME test_boost
    COMMAND $<TARGET_FILE:testboost.x>
 )
@@ -34,4 +44,19 @@ add_test(
 add_test(
    NAME test_boost_iostream
    COMMAND $<TARGET_FILE:test_boost_iostream.x>
+)
+set_tests_properties(
+   test_boost_iostream
+   PROPERTIES
+      FIXTURES_REQUIRED test_boost_fixtures
+)
+
+add_test(
+   NAME cleanup
+   COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test/cleanup.sh
+)
+set_tests_properties(
+   cleanup
+   PROPERTIES
+      FIXTURES_CLEANUP test_boost_fixtures
 )
