@@ -30,10 +30,11 @@ TEST_CASE("Test for existence of shell commented file","[iostream][shell_comment
    string ps("shell_comment.md");
    REQUIRE(fs::exists(ps));
    SECTION("Read a line from shell commented file"){
-      io::stream_buffer<io::file_source> buf(ps);
-      istream                           in(&buf);
-      getline(in,result);
-      REQUIRE(result == "# Title in a Markdown file");
+      io::filtering_istream in;
+      in.push(ex::shell_comments_input_filter());
+      in.push(io::file_source(ps));
+      in >> result;
+      REQUIRE(result == "Test");
 //      SECTION("Remove shell comments"){
 //         string output;
 //         io::filtering_istream in;
