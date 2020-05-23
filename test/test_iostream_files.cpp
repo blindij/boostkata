@@ -9,6 +9,11 @@ using namespace std;
 namespace io = boost::iostreams;
 namespace fs = boost::filesystem;
 
+TEST_CASE("Test for existence of shell commented file","[iostream][shell_comment]"){
+   string ps("shell_comment.md");
+   REQUIRE(fs::exists(ps));
+}
+
 TEST_CASE("Read from gloser.txt","[iostream][fileread]"){
    // io::filtering_istream in;
    //
@@ -35,3 +40,5 @@ TEST_CASE("Write to log.txt","[iostream][log]"){
       REQUIRE(fs::remove(ps));
    }
 }
+
+
