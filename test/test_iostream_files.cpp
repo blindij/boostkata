@@ -35,11 +35,13 @@ TEST_CASE("Test for existence of shell commented file","[iostream][shell_comment
       in.push(io::file_source(ps));
       in >> result;
       REQUIRE(result == "Test");
-//      SECTION("Remove shell comments"){
-//         string output;
-//         io::filtering_istream in;
-//         REQUIRE( in.push(ex::shell_comments_input_filter(result)) == EOF);
-//      }
+      SECTION("Read rest of the lines from shell commented file"){
+         string tmp;
+         while( in  >> tmp ){
+           result += tmp;
+         }
+         REQUIRE( result == "TestThereisalwaysThetextusuallyrunsover");
+      }
    }
 }
 

@@ -21,18 +21,6 @@ HERE
 
 cat > shell_comment.md << HEXE2
 Test# Title in a Markdown file
-There is always some simple text.
-The text usually runs over several lines. Maybe there is a list to:
-* Item 1
-* Item 2
-* Item 3
-
-## A subparagraph
-In markdown files there are not comments # like this,
-but it can be in code examples:
-```
-#!/bin/bash
-ls -l  # Check for files
-echo "text" # Just a echo commmand
-```
+There is always # some simple text.
+The text usually runs over# several lines. Maybe there is a list to:
 HEXE2
