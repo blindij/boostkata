@@ -45,7 +45,7 @@ TEST_CASE("Test for existence of shell commented file","[iostream][shell_comment
    }
 }
 
-TEST_CASE("Use get() with filter to remoe shell-style comments","[iostream][get]"){
+TEST_CASE("Use get() with filter to remove shell-style comments","[iostream][get]"){
    typedef ex::container_source<string> string_source;
    char ch;
    string result;
@@ -55,14 +55,27 @@ TEST_CASE("Use get() with filter to remoe shell-style comments","[iostream][get]
       io::filtering_istream in;
       in.push(ex::shell_comments_input_filter());
       in.push(io::file_source(ps));
-      REQUIRE( in.get() == 'T');
-//      SECTION("Read rest of the lines from shell commented file"){
-//         string tmp;
-//         while( in  >> tmp ){
-//           result += tmp;
-//         }
-//         REQUIRE( result == "TestThereisalwaysThetextusuallyrunsover");
-//      }
+      ch = in.get();
+      while(  ch != '\n'){
+         result += ch;
+         ch = in.get();
+      }
+      REQUIRE( result == "Test");
+   }
+}
+
+TEST_CASE("Use getline() with filter to remoe shell-style comments","[iostream][getline]"){
+   typedef ex::container_source<string> string_source;
+   char ch;
+   string result;
+   string ps("shell_comment.md");
+   REQUIRE(fs::exists(ps));
+   SECTION("Read a line from shell commented file"){
+      io::filtering_istream in;
+      in.push(ex::shell_comments_input_filter());
+      in.push(io::file_source(ps));
+      getline(in, result);
+      REQUIRE( result == "Test");
    }
 }
 
