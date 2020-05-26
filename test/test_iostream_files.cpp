@@ -67,15 +67,20 @@ TEST_CASE("Use get() with filter to remove shell-style comments","[iostream][get
 TEST_CASE("Use getline() with filter to remoe shell-style comments","[iostream][getline]"){
    typedef ex::container_source<string> string_source;
    char ch;
-   string result;
+   string result,newline;
    string ps("shell_comment.md");
    REQUIRE(fs::exists(ps));
    SECTION("Read a line from shell commented file"){
       io::filtering_istream in;
       in.push(ex::shell_comments_input_filter());
       in.push(io::file_source(ps));
-      getline(in, result);
+      getline(in, newline);
+      result += newline;
       REQUIRE( result == "Test");
+      SECTION("Read the file using getline()"){
+         while( getline(in,newline)){result += newline;}
+         REQUIRE( result == "TestThere is always The text usually runs over" );
+      }
    }
 }
 
