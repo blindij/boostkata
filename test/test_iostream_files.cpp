@@ -1,13 +1,16 @@
+// File: test_iostream_files.cpp
+//
+// Test reading and writing to files with boost.iostream.file_sink and
+// boost.iostream.file_source
 #include "catch2/catch.hpp"
-#include <boost/iostreams/device/file.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
-#include <iostream>
-#include <boost/iostreams/stream.hpp>
 #include <boost/filesystem.hpp>
+#include <iostreams/example/container_device.hpp>
+
 
 using namespace std;
 namespace io = boost::iostreams;
 namespace fs = boost::filesystem;
+
 
 TEST_CASE("Read from gloser.txt","[iostream][fileread]"){
    // io::filtering_istream in;
@@ -35,3 +38,5 @@ TEST_CASE("Write to log.txt","[iostream][log]"){
       REQUIRE(fs::remove(ps));
    }
 }
+
+
