@@ -5,8 +5,10 @@
 #include "catch2/catch.hpp"
 #include <sstream>                    // for string output stream
 // #include <boost/filesystem.hpp>
-// #include <iostreams/example/container_device.hpp>
+#include <iostreams/example/container_device.hpp>
 #include <iostreams/example/dictionary_filter.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include "iostreams/example/shell_comments_filter.hpp"
 
 
 using namespace std;
@@ -42,4 +44,25 @@ TEST_CASE("Add a key to the dictionary","[iostream][dictionary][add]"){
    }
 }
 
-
+TEST_CASE("Create dictionary and use it for input filter","[dictionary][input]"){
+   // Create dictionary
+   ostringstream myout;
+   ex::dictionary d;
+   d.add("VW","Volkswagen");
+   d.add("AAPL","Apple");
+   d.add("NKE","Nike");
+   d.add("YHOO","Yahoo");
+   myout << d;
+   REQUIRE( myout.str() == "(aapl: Apple)\n(nke: Nike)\n(vw: Volkswagen)\n(yhoo: Yahoo)\n");
+   SECTION("Use dictionary input filter"){
+      typedef ex::container_source<std::string> string_source;
+      string input("VW sell cars!#It is true");
+      string output;
+      io::stream<string_source> in(input);
+      io::filtering_istream in_str;
+      in_str.push(ex::shell_comments_input_filter());
+      in_str.push(in);
+      getline(in_str, output);
+      REQUIRE( output == "VW sell cars!");
+   }
+}
