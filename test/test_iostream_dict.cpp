@@ -56,13 +56,14 @@ TEST_CASE("Create dictionary and use it for input filter","[dictionary][input]")
    REQUIRE( myout.str() == "(aapl: Apple)\n(nke: Nike)\n(vw: Volkswagen)\n(yhoo: Yahoo)\n");
    SECTION("Use dictionary input filter"){
       typedef ex::container_source<std::string> string_source;
-      string input("VW sell cars!#It is true");
+      string input("vw sell cars!#It is true");
       string output;
       io::stream<string_source> in(input);
       io::filtering_istream in_str;
       in_str.push(ex::shell_comments_input_filter());
+      in_str.push(ex::dictionary_input_filter(d));
       in_str.push(in);
       getline(in_str, output);
-      REQUIRE( output == "VW sell cars!");
+      REQUIRE( output == "Volkswagen sell cars!");
    }
 }

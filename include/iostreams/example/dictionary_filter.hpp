@@ -13,6 +13,7 @@
 #include <boost/iostreams/concepts.hpp>
 #include <boost/iostreams/operations.hpp>
 #include <ostream>
+#include <string>
 
 #ifdef BOOST_NO_STDC_NAMESPACE
 namespace std {
@@ -39,6 +40,58 @@ class dictionary {
       void tolower(std::string& str);
       map_type map_;
 
+};
+
+class dictionary_input_filter : public input_filter {
+   public:
+      dictionary_input_filter(dictionary& d)
+      : dictionary_(d), off_(std::string::npos), eof_(false) { }
+
+      template<typename Source>
+      int get(Source& src) {
+         // Handle unfinished business
+         if (off_ != std::string::npos && off_ < current_word_.size())
+            return current_word_[off_++];
+         if (off_ == current_word_.size()) {
+            current_word_.erase();
+            off_ = std::string::npos;
+         }
+         if (eof_)
+            return EOF;
+
+         // Compute current word
+         while (true) {
+            int c;
+            if ((c =iostreams::get(src)) == WOULD_BLOCK)
+               return WOULD_BLOCK;
+
+            if (c == EOF || !std::isalpha((unsigned char) c)) {
+               dictionary_.replace(current_word_);
+               off_ = 0;
+               if (c == EOF)
+                  eof_ = true;
+               else
+                  current_word_ += c;
+               break;
+            } else {
+               current_word_ += c;
+            }
+         }
+
+         return this->get(src);  // Note current_word_ is not empty
+      }
+
+      template<typename Source>
+      void close(Source&) {
+         current_word_.erase();
+         off_ = std::string::npos;
+         eof_ = false;
+      }
+   private:
+      dictionary&             dictionary_;
+      std::string             current_word_;
+      std::string::size_type  off_;
+      bool                    eof_;
 };
 
 // --------------- Implementation of dictionary -------------------
