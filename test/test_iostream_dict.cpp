@@ -34,4 +34,12 @@ TEST_CASE("Add a key to the dictionary","[iostream][dictionary][add]"){
    d.add("palpable","(adj) that is easily noticed by the mind or senses");
    myout << d;
    REQUIRE( myout.str() == "(palpable: (adj) that is easily noticed by the mind or senses)\n");
+   SECTION("Replace"){
+      string key("palpable");
+      d.replace(key);
+      REQUIRE( key == "(adj) that is easily noticed by the mind or senses");
+      
+   }
 }
+
+
