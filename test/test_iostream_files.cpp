@@ -3,18 +3,18 @@
 // Test reading and writing to files with boost.iostream.file_sink and
 // boost.iostream.file_source
 #include "catch2/catch.hpp"
+#include <sstream>                    // for string output stream
 #include <boost/filesystem.hpp>
 #include <iostreams/example/container_device.hpp>
+//#include <iostreams/example/dictionary_filter.hpp>
 
 
 using namespace std;
 namespace io = boost::iostreams;
 namespace fs = boost::filesystem;
-
+namespace ex = boost::iostreams::example;
 
 TEST_CASE("Read from gloser.txt","[iostream][fileread]"){
-   // io::filtering_istream in;
-   //
    string ps("gloser.txt");
    string result;
    REQUIRE(fs::exists(ps));
