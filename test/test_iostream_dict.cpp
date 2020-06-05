@@ -44,7 +44,7 @@ TEST_CASE("Add a key to the dictionary","[iostream][dictionary][add]"){
    }
 }
 
-TEST_CASE("Create dictionary and use it for input filter","[dictionary][input]"){
+TEST_CASE("Create dictionary and use it for input filter","[iostream],[dictionary][input]"){
    // Create dictionary
    ostringstream myout;
    ex::dictionary d;
@@ -56,7 +56,7 @@ TEST_CASE("Create dictionary and use it for input filter","[dictionary][input]")
    REQUIRE( myout.str() == "(aapl: Apple)\n(nke: Nike)\n(vw: Volkswagen)\n(yhoo: Yahoo)\n");
    SECTION("Use dictionary input filter"){
       typedef ex::container_source<std::string> string_source;
-      string input("vw sell cars!#It is true");
+      string input("VW sell cars!#It is true");
       string output;
       io::stream<string_source> in(input);
       io::filtering_istream in_str;

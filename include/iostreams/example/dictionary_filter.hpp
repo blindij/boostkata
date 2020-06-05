@@ -104,7 +104,7 @@ inline void dictionary::replace(std::string& key){
    using namespace std;
    string copy(key);
    tolower(copy);
-   map_type::iterator it = map_.find(key);
+   map_type::iterator it = map_.find(copy);
    if (it == map_.end())
       return;
    string& value = it->second;
