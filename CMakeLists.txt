@@ -39,14 +39,16 @@ ExternalProject_Add(${PROJECT_NAME}_core
   )
 
 # Add Catch2
-add_subdirectory(lib/Catch2)
+include_directories(include)
+
+# Add subdirectory src
+add_subdirectory(src)
 
 # Add subdirectory test
-# add_subdirectory(test)
-
+add_subdirectory(test)
 # --------
-add_executable(testboost.x test/test_boost_libs.cpp)
-target_link_libraries(testboost.x Catch2::Catch2)
+#add_executable(testboost.x test/test_boost_libs.cpp)
+#target_link_libraries(testboost.x Catch2::Catch2)
 enable_testing()
 # add CTest
 #include(CTest)
