@@ -4,17 +4,21 @@
 // IO filter
 #include "catch2/catch.hpp"
 #include <sstream>                    // for string output stream
-// #include <boost/filesystem.hpp>
 #include <iostreams/example/container_device.hpp>
 #include <iostreams/example/dictionary_filter.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include "iostreams/example/shell_comments_filter.hpp"
 
 
 using namespace std;
-//namespace io = boost::iostreams;
-//namespace fs = boost::filesystem;
 namespace ex = boost::iostreams::example;
+namespace io = boost::iostreams;
+
+TEST_CASE("Testing for carriage return","[cr]"){
+   string best("teststring\r\n");
+   REQUIRE( best == "teststring\r\n");
+}
 
 TEST_CASE("Testing maps and iterators","[map][iterator]"){
    typedef map<string,float> StringFloatMap;
@@ -67,3 +71,4 @@ TEST_CASE("Create dictionary and use it for input filter","[iostream],[dictionar
       REQUIRE( output == "Volkswagen sell cars!");
    }
 }
+

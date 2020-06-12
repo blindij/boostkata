@@ -18,6 +18,7 @@ add_executable(test_boost_iostream.x
    test_iostream_files.cpp
    test_iostream_shell_comment.cpp
    test_iostream_dict.cpp
+   test_iostream_unix2dos.cpp
 )
 
 target_link_libraries(test_boost_iostream.x
