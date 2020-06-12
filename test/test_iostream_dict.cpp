@@ -7,14 +7,25 @@
 // #include <boost/filesystem.hpp>
 #include <iostreams/example/container_device.hpp>
 #include <iostreams/example/dictionary_filter.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/invert.hpp>
 #include "iostreams/example/shell_comments_filter.hpp"
+#include "iostreams/example/unix2dos_filter.hpp"
 
 
 using namespace std;
 //namespace io = boost::iostreams;
 //namespace fs = boost::filesystem;
 namespace ex = boost::iostreams::example;
+namespace io = boost::iostreams;
+typedef io::inverse<ex::unix2dos_input_filter> unix2dos_output_filter;
+
+TEST_CASE("Testing for carriage return","[cr]"){
+   string best("teststring\r\n");
+   REQUIRE( best == "teststring\r\n");
+}
 
 TEST_CASE("Testing maps and iterators","[map][iterator]"){
    typedef map<string,float> StringFloatMap;
@@ -66,4 +77,31 @@ TEST_CASE("Create dictionary and use it for input filter","[iostream],[dictionar
       getline(in_str, output);
       REQUIRE( output == "Volkswagen sell cars!");
    }
+}
+
+TEST_CASE("Use unix2dos output_filter","[iostream][unix2dos]"){
+   typedef ex::container_sink<string> string_sink;
+   string result;
+   // io::stream<string_sink> io(result);
+   // unix2dos_input_filter if;
+   io::filtering_ostream out; // (back_inserter(result)); // io::back_inserter(result));
+   //out_str.push(invert(ex::unix2dos_input_filter()));
+   out.push(ex::unix2dos_output_filter());
+   out.push(back_inserter(result));
+   out << "Hello World!\n";
+   out.flush();
+   REQUIRE( result == "Hello World!\r\n");
+   SECTION("Check that result[13] equals CR"){
+      REQUIRE( result.length() == 14);
+   }
+}
+
+TEST_CASE("Use unix2dos output_filter to write file","[iostream][unix2dos][file]"){
+   string filename("dos.txt");
+   io::filtering_ostream out;
+   out.push(invert(ex::unix2dos_input_filter()));
+   out.push(io::file_sink(filename));
+   out << "Hello World!\n";
+   out.flush();
+   REQUIRE(boost::filesystem::file_size(filename) == 14);
 }
