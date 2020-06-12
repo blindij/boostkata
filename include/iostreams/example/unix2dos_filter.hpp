@@ -24,7 +24,7 @@ public:
    unix2dos_input_filter() : has_linefeed_(false) { }
 
    template<typename Source>
-   bool get(Source& src){
+   int get(Source& src){
       // Handle unfinished business
       if (has_linefeed_) {
          has_linefeed_ = false;

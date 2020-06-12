@@ -82,10 +82,7 @@ TEST_CASE("Create dictionary and use it for input filter","[iostream],[dictionar
 TEST_CASE("Use unix2dos output_filter","[iostream][unix2dos]"){
    typedef ex::container_sink<string> string_sink;
    string result;
-   // io::stream<string_sink> io(result);
-   // unix2dos_input_filter if;
    io::filtering_ostream out; // (back_inserter(result)); // io::back_inserter(result));
-   //out_str.push(invert(ex::unix2dos_input_filter()));
    out.push(ex::unix2dos_output_filter());
    out.push(back_inserter(result));
    out << "Hello World!\n";  // The length of the s tring is 13 characters
@@ -106,12 +103,13 @@ TEST_CASE("Use a unix2dos_output_filter to write file","[iostream][unix2dos][inv
    REQUIRE(boost::filesystem::file_size(filename) == 14);
 }
 
-//TEST_CASE("Use a inverted unix2dos_input_filter to write file","[iostream][unix2dos][invert][file]"){
-//   string filename("dos.txt");
-//   io::filtering_ostream out;
-//   out.push(invert(ex::unix2dos_input_filter()));
-//   out.push(io::file_sink(filename));
-//   out << "Hello World!\n";  // The length of the string is 13.
-//   out.flush();              // It increases to 14 with filtering. CR is added
-//   REQUIRE(boost::filesystem::file_size(filename) == 14);
-//}
+TEST_CASE("Use a inverted unix2dos_input_filter to write file","[iostream][unix2dos][invert][file]"){
+   typedef io::inverse<ex::unix2dos_input_filter> unix2dos_output_filter;
+   string filename("dos.txt");
+   io::filtering_ostream out;
+   out.push(invert(ex::unix2dos_input_filter()));
+   out.push(io::file_sink(filename));
+   out << "Hello World!\n";  // The length of the string is 13.
+   out.flush();              // It increases to 14 with filtering. CR is added
+   REQUIRE(boost::filesystem::file_size(filename) == 14);
+}
