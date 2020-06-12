@@ -5,7 +5,9 @@
 #include "catch2/catch.hpp"
 #include <sstream>                    // for string output stream
 #include <boost/filesystem.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 #include <iostreams/example/container_device.hpp>
+#include <iostreams/example/unix2dos_filter.hpp>
 //#include <iostreams/example/dictionary_filter.hpp>
 
 
@@ -39,4 +41,26 @@ TEST_CASE("Write to log.txt","[iostream][log]"){
    }
 }
 
+// 
+// Use filters in stream output to file
+//
+TEST_CASE("Use a unix2dos_output_filter to write file","[iostream][unix2dos][invert][file]"){
+   string filename("dos.txt");
+   io::filtering_ostream out;
+   out.push(ex::unix2dos_output_filter());
+   out.push(io::file_sink(filename));
+   out << "Hello World!\n";  // The length of the string is 13.
+   out.flush();              // It increases to 14 with filtering. CR is added
+   REQUIRE(boost::filesystem::file_size(filename) == 14);
+}
 
+TEST_CASE("Use a inverted unix2dos_input_filter to write file","[iostream][unix2dos][invert][file]"){
+   typedef io::inverse<ex::unix2dos_input_filter> unix2dos_output_filter;
+   string filename("dos.txt");
+   io::filtering_ostream out;
+   out.push(invert(ex::unix2dos_input_filter()));
+   out.push(io::file_sink(filename));
+   out << "Hello World!\n";  // The length of the string is 13.
+   out.flush();              // It increases to 14 with filtering. CR is added
+   REQUIRE(boost::filesystem::file_size(filename) == 14);
+}

@@ -13,9 +13,6 @@
 #include <boost/iostreams/operations.hpp>
 #include <boost/iostreams/invert.hpp>
 
-namespace io = boost::iostreams;
-namespace ex = boost::iostreams::example;
-
 namespace boost { namespace iostreams { namespace example {
 class unix2dos_input_filter : public input_filter   {
 public:
