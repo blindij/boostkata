@@ -25,6 +25,10 @@ target_link_libraries(test_boost_iostream.x
                      Boost::filesystem
 )
 
+add_executable(test_boost_phoenix.x
+   test_main_phoenix.cpp
+)
+
 add_executable(test_boost_regex.x
    test_main_regex.cpp
 )

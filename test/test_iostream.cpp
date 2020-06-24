@@ -3,8 +3,6 @@
 #include <boost/iostreams/operations.hpp>             // put
 #include "iostreams/example/container_device.hpp"
 
-
-
 using namespace std;
 namespace io = boost::iostreams;
 namespace ex = boost::iostreams::example;
