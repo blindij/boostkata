@@ -5,13 +5,16 @@
 #include "catch2/catch.hpp"
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/operator.hpp>
+#include <boost/phoenix/statement.hpp>
 #include <algorithm>
-#include <iostream>
+#include <sstream>
+//#include <iostream>
 // #include <string>
 #include <vector>
 //
 // ----- add start of new test modules; testing Boost::phoenix
 //
+using boost::phoenix::if_;
 using boost::phoenix::arg_names::arg1;
 using boost::phoenix::arg_names::arg2;
 using boost::phoenix::val;
@@ -28,6 +31,17 @@ using boost::phoenix::ref;
 // ref(x)[i]      // lazy
 // x[ref[i]       // illegal (x is not a phoenix primitive or expression)
 // ref(x[ref(i)]) // illegal (x is not a phoenix primitive or expression)
+TEST_CASE("Lazy Statements","[lazy][statements]"){
+   std::ostringstream strout;
+   int init[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+   std::vector<int> v(init, init+10);
+   std::vector<int> x;
+
+   std::for_each(v.begin(), v.end(), if_(arg1 > 5) [ strout << arg1 << ", " ]);
+
+   REQUIRE(strout.str() == "6, 7, 8, 9, 10, ");
+}
+
 TEST_CASE("Lazy operators","[lazy]"){
    int init[] { 2, 10, 4, 5, 1, 6, 8, 3, 9, 7 };
    std::vector<int> c(init, init + 10);
