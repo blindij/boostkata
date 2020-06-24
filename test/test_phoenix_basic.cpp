@@ -6,10 +6,9 @@
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/operator.hpp>
 #include <boost/phoenix/statement.hpp>
+#include <boost/phoenix/function.hpp>
 #include <algorithm>
 #include <sstream>
-//#include <iostream>
-// #include <string>
 #include <vector>
 //
 // ----- add start of new test modules; testing Boost::phoenix
@@ -19,8 +18,21 @@ using boost::phoenix::arg_names::arg1;
 using boost::phoenix::arg_names::arg2;
 using boost::phoenix::val;
 using boost::phoenix::ref;
+using boost::phoenix::function;
 
-// --- lazy operators
+// --- lazy function ---
+struct is_odd_ {
+   typedef bool result_type;
+
+   template <typename Arg>
+   bool operator()(Arg arg1) const {
+      return arg1 % 2 == 1;
+   }
+};
+
+function<is_odd_> is_odd;
+
+// --- lazy operators ---
 // ref(x) = 123   // lazy
 // x      = 123   // immediate
 //
@@ -31,6 +43,19 @@ using boost::phoenix::ref;
 // ref(x)[i]      // lazy
 // x[ref[i]       // illegal (x is not a phoenix primitive or expression)
 // ref(x[ref(i)]) // illegal (x is not a phoenix primitive or expression)
+TEST_CASE("Lazy function","[lazy][function]"){
+   int init[] = { 2, 10, 4, 5, 1, 6, 8, 3, 9, 7 };
+   std::vector<int> c(init, init+10);
+   typedef std::vector<int>::iterator iterator;
+
+   // Use the lazy function to find the first odd unmber in container c
+   iterator it = std::find_if(c.begin(), c.end(), is_odd(arg1));
+   REQUIRE( it != c.end());
+   SECTION("Verify first odd number"){
+      REQUIRE( *it == 5);
+   }
+}
+
 TEST_CASE("Lazy Statements","[lazy][statements]"){
    std::ostringstream strout;
    int init[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
