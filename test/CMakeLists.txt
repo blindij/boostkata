@@ -27,6 +27,7 @@ target_link_libraries(test_boost_iostream.x
 
 add_executable(test_boost_phoenix.x
    test_main_phoenix.cpp
+   test_phoenix_basic.cpp
 )
 
 add_executable(test_boost_regex.x
