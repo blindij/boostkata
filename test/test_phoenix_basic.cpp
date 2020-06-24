@@ -4,6 +4,7 @@
 //
 #include "catch2/catch.hpp"
 #include <boost/phoenix/core.hpp>
+#include <boost/phoenix/operator.hpp>
 #include <algorithm>
 #include <iostream>
 // #include <string>
@@ -15,6 +16,30 @@ using boost::phoenix::arg_names::arg1;
 using boost::phoenix::arg_names::arg2;
 using boost::phoenix::val;
 using boost::phoenix::ref;
+
+// --- lazy operators
+// ref(x) = 123   // lazy
+// x      = 123   // immediate
+//
+// ref(x)[0]      // lazy
+// x[0]           // immediate
+//
+// ref(x)[ref(i)] // lazy
+// ref(x)[i]      // lazy
+// x[ref[i]       // illegal (x is not a phoenix primitive or expression)
+// ref(x[ref(i)]) // illegal (x is not a phoenix primitive or expression)
+TEST_CASE("Lazy operators","[lazy]"){
+   int init[] { 2, 10, 4, 5, 1, 6, 8, 3, 9, 7 };
+   std::vector<int> c(init, init + 10);
+   typedef std::vector<int>::iterator iterator;
+
+   // Find the first odd number in container c
+   iterator it = std::find_if(c.begin(), c.end(), arg1 % 2 == 1);
+   REQUIRE (it != c.end());
+   SECTION("Check for odd number"){
+      REQUIRE( *it == 5);
+   }
+}
 
 // ----- arguments -----
 TEST_CASE("Test Boost::phoenix arguments","[argument]"){
