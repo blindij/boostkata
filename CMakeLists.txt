@@ -68,7 +68,31 @@ set_tests_properties(
       FIXTURES_CLEANUP test_boost_fixtures
 )
 
+# ------ Boost::date_time setup
+add_test(
+   NAME date_time_setup
+   COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/date_time/test/setup.sh
+)
+set_tests_properties(
+   date_time_setup
+   PROPERTIES
+      FIXTURES_SETUP test_date_time_fixtures
+)
 add_test(
    NAME test_date_time
    COMMAND $<TARGET_FILE:test_date_time.x> -s
+)
+set_tests_properties(
+   test_date_time
+   PROPERTIES
+      FIXTURES_REQUIRED test_date_time_fixtures
+)
+add_test(
+   NAME date_time_cleanup
+   COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/date_time/test/cleanup.sh
+)
+set_tests_properties(
+   date_time_cleanup
+   PROPERTIES
+      FIXTURES_CLEANUP test_date_time_fixtures
 )
