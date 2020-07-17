@@ -7,6 +7,8 @@
 
 
 #include <string>
+#include <boost/tuple/tuple_comparison.hpp>
+
 std::string marys_story("Mary had a little lamb.\n"
                         "And everywhere that Mary\n"
                         "went the lamb was sure\n"
@@ -128,5 +130,12 @@ std::string marys_modified_story("M{a}ry h{a}d {a} little l{a}mb.\n"
                                  "to go.\n");
 REQUIRE(re_show("(a+)", marys_story)
 == marys_modified_story);
+}
+
+TEST_CASE("returning a tuple","[tuple]"){
+   std::string result("20200716T0206:63");
+   // boost::tuple<std::string, std::string> result_tuple("20200716T0206","63");
+   boost::tuple<std::string, std::string> result_tuple("test1","test2");
+   REQUIRE( result_tuple == re_pair(":", result));
 }
 #endif //REGEXPCPP_TEST_BASIC_REGEXP_HPP

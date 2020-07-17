@@ -18,3 +18,7 @@ const std::string re_dictword(const std::string &pat, const std::string &s) {
     boost::regex reg(pat, boost::regex::perl);
     return boost::regex_replace(s, reg, "${1}");
 }
+
+boost::tuple<std::string, std::string> re_pair(const std::string &pat, const std::string &s){
+   return boost::make_tuple("test1","test2");
+}
