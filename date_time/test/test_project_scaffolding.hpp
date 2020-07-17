@@ -4,57 +4,35 @@
 // when using the Boost library
 #ifndef TEST_PROJECT_SCAFFOLDING_HPP
 #define TEST_PROJECT_SCAFFOLDING_HPP
+#include <boost/date_time/gregorian/gregorian_types.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
-struct bad_hmean {
-   private:
-      double v1;
-      double v2;
-   public:
-      bad_hmean(double a = 0, double b = 0) : v1(a), v2(b){}
-      void mesg();
-};
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
-inline void bad_hmean::mesg(){
-   std::cout << "hmean(" << v1 << ", " << v2 << "):"
-               << "invalid arguments: a = -b\n";
-}
+TEST_CASE("Construct time object from ISO string","[date_time][isostring]"){
+   ptime t1(date(2020,Jul,16),hours(2)+minutes(6));
+   std::string  ts("20200716T0206");
+   ptime t2(from_iso_string(ts));
 
-struct bad_gmean {
-   public:
-      double v1;
-      double v2;
-      bad_gmean(double a = 0, double b = 0) :v1(a), v2(b){}
-      const char * mesg();
-};
-
-inline const char * bad_gmean::mesg() {
-   return "gmean() arguments shoulb be >= 0\n";
-}
-
-double hmean(double a, double b){
-   if (a == -b) {
-      throw "bad hmean() arguments: a = -b not allowd";
+   REQUIRE( t1 == t2 );
+   SECTION("Subtract 25 minutes"){
+      // Mandal subtract 15 minutes, Farsun 20 minutes
+      // => Estimate 25 minutes for Hidra
+      ptime t3(date(2020,Jul,16), hours(1)+minutes(41));
+      REQUIRE ( t3 == (t2 - minutes(25)) );
    }
-   return 2.0 * a * b/ (a + b);
 }
 
-double gmean(double a, double b) {
-   throw bad_gmean(a,b);
-   return std::sqrt(a * b);
-}
-
-TEST_CASE("testing hmean throwing object","[exception][hmean][object]"){
-   REQUIRE_THROWS_AS(throw bad_gmean(), bad_gmean);
-}
-
-TEST_CASE("testing may own throw","[exception][hmean]"){
-   REQUIRE_THROWS( hmean(10, -10));
-}
-
-TEST_CASE("Hello World","[hw]"){
-    std::ostringstream myout;
-    myout << "Hello World!" << std::endl;
-    REQUIRE( myout.str() == "Hello World!\n");
+TEST_CASE("Construct time object just after midnight","[date_time],[midnight]"){
+   ptime t1(date(2020,Jul,8), minutes(16));
+   std::string ts("20200708T0016");
+   ptime t2(from_iso_string(ts));
+   REQUIRE( t1 == t2);
+   SECTION("Subtract 25 minutes"){
+      ptime t3(date(2020,Jul,7), hours(23)+minutes(51));
+      REQUIRE ( t3 == (t2 - minutes(25)) );
+   }
 }
 
 #endif // end TEST_PROJECT_SCAFFOLDING_HPP
