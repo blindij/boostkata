@@ -32,6 +32,9 @@ TEST_CASE("Construct time object just after midnight","[date_time],[midnight]"){
    SECTION("Subtract 25 minutes"){
       ptime t3(date(2020,Jul,7), hours(23)+minutes(51));
       REQUIRE ( t3 == (t2 - minutes(25)) );
+      SECTION("Output simple string"){
+         REQUIRE( to_simple_string(t3) == "2020-Jul-07 23:51:00");
+      }
    }
 }
 
