@@ -47,10 +47,12 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
    size_t number_of_entries = read_iso_file(file, all_timepoints);
    REQUIRE( number_of_entries == 21);
    SECTION("Output all timepoints"){
+      std::vector<boost::tuple<string,string>> vector_of_timepoints_height_pair;
+      std::string pattern("(\\d{8}T\\d{4}):(\\d{4})");
       vector<string>::iterator pr;
       for(pr = all_timepoints.begin(); pr != all_timepoints.end(); pr++) {
-         std::cout << *pr << '\n';
+         vector_of_timepoints_height_pair.push_back(re_pair(pattern, *pr));
       }
-      REQUIRE( all_timepoints.size() == 21 );
+      REQUIRE( vector_of_timepoints_height_pair.size() == 21 );
    }
 }
