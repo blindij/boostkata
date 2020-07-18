@@ -12,6 +12,11 @@ using namespace boost::posix_time;
 namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
+void new_datetime_height(boost::posix_time::minutes min, double heightfactor, boost::tuple<boost::posix_time::ptime, int>& tho){
+   get<0>(tho) = tho.get<0>() + min;
+   get<1>(tho) = tho.get<1>() * heightfactor;
+}
+
 boost::tuple<ptime,int> string2datetime_height(const string& s, string& cm_height) {
    ptime t1(from_iso_string(s));
    istringstream height(cm_height);

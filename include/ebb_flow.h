@@ -11,6 +11,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 
+void new_datetime_height(boost::posix_time::minutes min, double heightfactor, boost::tuple<boost::posix_time::ptime, int>& tho);
 boost::tuple<boost::posix_time::ptime,int> string2datetime_height(const std::string& s, std::string& cm_height);
 size_t read_iso_file(std::string& filename, std::vector<std::string>& vecent);
 #endif // EBB_FLOW_H_
