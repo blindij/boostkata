@@ -14,11 +14,13 @@ using namespace std;
 using namespace boost::gregorian;
 using namespace boost::posix_time;
 
-//boost::tuple<ptime,int> string2datetime_height(const string& s, string cm_height) {
-//   ptime t1(from_iso_string(s));
-//   int height = atoi((char)cm_height);
-//   return make_tuple(t1, height);
-//}
+boost::tuple<ptime,int> string2datetime_height(const string& s, string cm_height) {
+   ptime t1(from_iso_string(s));
+   istringstream height(cm_height);
+   int tmp;
+   height >> tmp;
+   return boost::make_tuple(t1, tmp);
+}
 
 TEST_CASE("Convert string to int","[date_time],[atoi]"){
    istringstream h("63");
@@ -55,8 +57,8 @@ TEST_CASE("Construct time object just after midnight","[date_time],[midnight]"){
    }
 }
 
-//TEST_CASE("Construct tuple with time object and int","[date_time],[tuple]"){
-//   boost::tuple<ptime,int> time_height_pair(ptime(date(2020,Jul,16),hours(2)+minutes(6)), 63);
-//   REQUIRE( time_height_pair == string2datetime_height("20200716T0206","63"));
-//}
+TEST_CASE("Construct tuple with time object and int","[date_time],[tuple]"){
+   boost::tuple<ptime,int> time_height_pair(ptime(date(2020,Jul,16),hours(2)+minutes(6)), 63);
+   REQUIRE( time_height_pair == string2datetime_height("20200716T0206","63"));
+}
 #endif // end TEST_PROJECT_SCAFFOLDING_HPP
