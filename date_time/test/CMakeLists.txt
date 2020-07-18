@@ -6,6 +6,8 @@ add_executable(test_date_time.x
 )
 
 target_link_libraries(test_date_time.x
+                      regexcpp
+                      Boost::regex
                       Boost::date_time
                       Boost::filesystem
 )

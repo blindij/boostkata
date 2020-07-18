@@ -5,7 +5,6 @@
 #ifndef REGEXPCPP_TEST_BASIC_REGEXP_HPP
 #define REGEXPCPP_TEST_BASIC_REGEXP_HPP
 
-
 #include <string>
 #include <boost/tuple/tuple_comparison.hpp>
 
