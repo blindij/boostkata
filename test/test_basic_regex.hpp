@@ -133,9 +133,9 @@ REQUIRE(re_show("(a+)", marys_story)
 }
 
 TEST_CASE("returning a tuple","[tuple]"){
-   std::string result("20200716T0206:63");
-   // boost::tuple<std::string, std::string> result_tuple("20200716T0206","63");
-   boost::tuple<std::string, std::string> result_tuple("test1","test2");
-   REQUIRE( result_tuple == re_pair(":", result));
+   std::string result("20200716T0207:63");
+   boost::tuple<std::string, std::string> result_tuple("20200716T0207","63");
+   // boost::tuple<std::string, std::string> result_tuple("test1","test2");
+   REQUIRE( result_tuple == re_pair("(\\d{8}T\\d{4}):(\\d{2})", result));
 }
 #endif //REGEXPCPP_TEST_BASIC_REGEXP_HPP
