@@ -4,10 +4,10 @@
 // Example is from "Getting configuration options", in Boost C++
 // Application Development Cookbook
 //
-using namespace std;
 #include <boost/program_options.hpp>
 //#include <boost/program_options/error.hpp>
 #include <iostream>
+using namespace std;
 // Make an alias for boost::program_options
 namespace opt = boost::program_options;
 
@@ -18,10 +18,13 @@ int main(int argc, char *argv[]){
    // When adding options, first parameter is a name.
    // Second parameter is a type.
    // Third parameter is a short description.
-   desc.add_options()("apples,a", opt::value<int>()->default_value(10), "how many apples do you have")
-                     ("oranges,o", opt::value<int>(), "how many oranges do you have")
-                     ("name", opt::value<std::string>(), "your name")
-                     ("help","produce help message");
+   desc.add_options()
+      ("primary,p", opt::value<string>()->default_value("kristiansund"), "The standard harbour")
+      ("secondary,s", opt::value<string>()->default_value("uthaug"), "The secondary harbour under the standard")
+      ("minutes,m", opt::value<int>()->default_value(15), "Positive or negative minutes to use as correction")
+      ("heightfactor,hf", opt::value<double>()->default_value(1.14), "A correction factor for the height")
+      ("delta,d", opt::value<int>()->implicit_value(0), "A delta [cm] to add to the corrected height. For most harbours it is 0")
+      ("help","produce help message");
 
    // Variable to store our command line arguments 
    opt::variables_map vm;
@@ -39,14 +42,14 @@ int main(int argc, char *argv[]){
    // as a first parameter ofr 'parse_config_file'. 'char' templated
    // parameter will be passed to underlying std::basic_stream object
    try {
-      opt::store(opt::parse_config_file<char>("apples_oranges.cfg",desc), vm);
+      opt::store(opt::parse_config_file<char>("ebb.cfg",desc), vm);
    } catch (const opt::reading_file& e) {
-      std::cout << "Failed to open file 'apples_oranges.cfg': " << e.what();
+      std::cout << "Failed to open file 'ebb.cfg': " << e.what();
    }
    opt::notify(vm);
-   if (vm.count("name")){
-      std::cout << "Hi, " << vm["name"].as<std::string>() <<   "!\n";
+   if (vm.count("primary")){
+      std::cout << "Standard harbours is " << vm["primary"].as<std::string>() <<   ".\n";
    }
-   std::cout << "Fruits count: " << vm["apples"].as<int>() + vm["oranges"].as<int>() << std::endl;
+   std::cout << "Correction in minutes: " << vm["minutes"].as<int>() << " Height correction factor: " << vm["heightfactor"].as<double>() << std::endl;
    return 0;
 }
