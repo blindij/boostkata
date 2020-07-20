@@ -14,4 +14,5 @@
 void new_datetime_height(boost::posix_time::minutes min, double heightfactor, boost::tuple<boost::posix_time::ptime, int>& tho);
 boost::tuple<boost::posix_time::ptime,int> string2datetime_height(const std::string& s, std::string& cm_height);
 size_t read_iso_file(std::string& filename, std::vector<std::string>& vecent);
+size_t write_iso_file(std::string& filename, std::vector<boost::tuple<boost::posix_time::ptime, int>>& timeheightobjects);
 #endif // EBB_FLOW_H_

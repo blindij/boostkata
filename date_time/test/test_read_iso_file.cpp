@@ -40,3 +40,13 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
       REQUIRE( vector_of_timepoints_height_pair.size() == 21 );
    }
 }
+
+TEST_CASE("Write all entries to a new txt file","[date_time],[write_to_file]"){
+   string file("farsundiso.txt");
+   size_t entries_written = 0;
+   vector<boost::tuple<boost::posix_time::ptime,int>> entry_vector; //vectorofentries(make_tuple(boost::posix_time::from_iso_string("20200715T0016"),35));
+   entry_vector.push_back(boost::make_tuple(boost::posix_time::from_iso_string("20200715T0016"),35));
+   entry_vector.push_back(boost::make_tuple(boost::posix_time::from_iso_string("20200715T0645"),20));
+   entries_written = write_iso_file(file, entry_vector);
+   REQUIRE( entries_written == 2);
+}
