@@ -4,7 +4,10 @@
 // Example is from "Getting configuration options", in Boost C++
 // Application Development Cookbook
 //
+#include "ebb_flow.h"
+#include "regexpcpp.h"
 #include <boost/program_options.hpp>
+#include <boost/tuple/tuple.hpp>
 //#include <boost/program_options/error.hpp>
 #include <iostream>
 using namespace std;
