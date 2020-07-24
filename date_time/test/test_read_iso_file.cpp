@@ -3,13 +3,13 @@
 // Read the file helgeroaiso.txt which contain time points for
 // ebb and flow at Helgeroa in a ISO time format
 #include "catch2/catch.hpp"
-//#include "regexpcpp.h"
 #include "ebb_flow.h"
 #include <iostream>
 #include <sstream>
 #include <vector>
 
 using namespace std;
+namespace pt = boost::posix_time;
 namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
@@ -53,12 +53,12 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
       }
       REQUIRE( outstr.str() == "(20200716T0206 63)\n(20200716T0830 33)\n(20200716T1441 60)\n" );
       SECTION("Transform tuple to new tuple with minutes and int"){
-         std::vector<boost::tuple<boost::posix_time::ptime, int>> result;
+         std::vector<boost::tuple<pt::ptime, int>> result;
          std::transform(vector_of_timepoints_height_pair.begin(),
                         vector_of_timepoints_height_pair.end(),
                         std::back_inserter(result), 
                         [](auto & x){
-                           boost::posix_time::ptime t1(boost::posix_time::from_iso_string(get<0>(x)));
+                           pt::ptime t1(pt::from_iso_string(get<0>(x)));
                            istringstream height(get<1>(x));
                            int tmp;
                            height >> tmp;
@@ -72,8 +72,8 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
          SECTION("Transform tuple to tuple with new time/height pairs"){
             const double heightfactor = 0.56;
             const int distance_delta = 10;
-            const boost::posix_time::minutes adjust_min(-25);
-            std::vector<boost::tuple<boost::posix_time::ptime, int>> transformed;
+            const pt::minutes adjust_min(-25);
+            std::vector<boost::tuple<pt::ptime, int>> transformed;
             std::transform(result.begin(),
                            result.end(),
                            std::back_inserter(transformed),
@@ -93,9 +93,9 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
 TEST_CASE("Write all entries to a new txt file","[date_time],[write_to_file]"){
    string file("farsundiso.txt");
    size_t entries_written = 0;
-   vector<boost::tuple<boost::posix_time::ptime,int>> entry_vector; //vectorofentries(make_tuple(boost::posix_time::from_iso_string("20200715T0016"),35));
-   entry_vector.push_back(boost::make_tuple(boost::posix_time::from_iso_string("20200715T0016"),35));
-   entry_vector.push_back(boost::make_tuple(boost::posix_time::from_iso_string("20200715T0645"),20));
+   vector<boost::tuple<pt::ptime,int>> entry_vector; 
+   entry_vector.push_back(boost::make_tuple(pt::from_iso_string("20200715T0016"),35));
+   entry_vector.push_back(boost::make_tuple(pt::from_iso_string("20200715T0645"),20));
    entries_written = write_iso_file(file, entry_vector);
    REQUIRE( entries_written == 2);
 }

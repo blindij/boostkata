@@ -6,9 +6,9 @@
 #include "ebb_flow.h"
 
 using namespace std;
-using namespace boost::gregorian;
-using namespace boost::posix_time;
+//using namespace boost::gregorian;
 
+namespace pt = boost::posix_time;
 namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
@@ -25,12 +25,12 @@ size_t read_iso_file(std::string& filename,std::vector<std::string>& vecent){
    return vecent.size();
 }
 
-size_t write_iso_file(std::string& filename, std::vector<boost::tuple<boost::posix_time::ptime, int>>& timeheightobjects){
+size_t write_iso_file(std::string& filename, std::vector<boost::tuple<pt::ptime, int>>& timeheightobjects){
    size_t written = 0;
    io::stream_buffer<io::file_sink> buf(filename);
    std::ostream out(&buf);
    for_each(begin(timeheightobjects),end(timeheightobjects),
-      [&out, &written](boost::tuple<boost::posix_time::ptime,int> n) { out << n.get<0>() << ":" << n.get<1>() << std::endl;
+      [&out, &written](boost::tuple<pt::ptime,int> n) { out << n.get<0>() << ":" << n.get<1>() << std::endl;
       written++;
       });
    out.flush();
