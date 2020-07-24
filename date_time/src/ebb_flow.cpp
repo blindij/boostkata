@@ -17,9 +17,10 @@ void new_datetime_height(boost::posix_time::minutes min, double heightfactor, bo
    get<1>(tho) = tho.get<1>() * heightfactor;
 }
 
-boost::tuple<ptime,int> string2datetime_height(const string& s, string& cm_height) {
-   ptime t1(from_iso_string(s));
-   istringstream height(cm_height);
+//boost::tuple<ptime,int> string2datetime_height(const string& s, string& cm_height) {
+boost::tuple<ptime,int> string2datetime_height(const boost::tuple<string,string>& tup) {
+   ptime t1(from_iso_string(tup.get<0>()));
+   istringstream height(tup.get<1>());
    int tmp;
    height >> tmp;
    return boost::make_tuple(t1, tmp);
