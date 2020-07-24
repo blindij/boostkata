@@ -3,7 +3,7 @@
 // Read the file helgeroaiso.txt which contain time points for
 // ebb and flow at Helgeroa in a ISO time format
 #include "catch2/catch.hpp"
-#include "regexpcpp.h"
+//#include "regexpcpp.h"
 #include "ebb_flow.h"
 #include <iostream>
 #include <sstream>
@@ -33,22 +33,37 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
    SECTION("Output all timepoints"){
       std::ostringstream outstr;
       std::vector<boost::tuple<string,string>> vector_of_timepoints_height_pair;
-      std::string pattern("(\\d{8}T\\d{4}):(\\d{2})");
+      std::string pat("(\\d{8}T\\d{4}):(\\d{2})");
       all_timepoints.pop_back();
-      vector<string>::iterator pr;
-      for(pr = all_timepoints.begin(); pr != all_timepoints.end(); pr++) {
-         vector_of_timepoints_height_pair.push_back(re_pair(pattern, *pr));
-      }
+      transform(all_timepoints.begin(), all_timepoints.end(),
+                  std::back_inserter(vector_of_timepoints_height_pair),
+                  [&pat](auto & x){
+                  boost::regex reg(pat, boost::regex::perl);
+                  boost::smatch what;
+                  std::string part_one,part_two;
+                  if (boost::regex_match(x,what,reg, boost::match_extra)){
+                     part_one = what[1];
+                     part_two = what[2];
+                  } 
+                  
+                  return boost::make_tuple(part_one, part_two);
+                  });
       for(auto i=0;i < 3; i++){
-         outstr << vector_of_timepoints_height_pair[i].get<0>() << " " << vector_of_timepoints_height_pair[i].get<1>() << std::endl;
+         outstr << vector_of_timepoints_height_pair[i] << std::endl;
       }
-      REQUIRE( outstr.str() == "20200716T0206 63\n20200716T0830 33\n20200716T1441 60\n" );
+      REQUIRE( outstr.str() == "(20200716T0206 63)\n(20200716T0830 33)\n(20200716T1441 60)\n" );
       SECTION("Transform tuple to new tuple with minutes and int"){
          std::vector<boost::tuple<boost::posix_time::ptime, int>> result;
          std::transform(vector_of_timepoints_height_pair.begin(),
                         vector_of_timepoints_height_pair.end(),
                         std::back_inserter(result), 
-                        string2datetime_height);
+                        [](auto & x){
+                           boost::posix_time::ptime t1(boost::posix_time::from_iso_string(get<0>(x)));
+                           istringstream height(get<1>(x));
+                           int tmp;
+                           height >> tmp;
+                           return boost::make_tuple(t1, tmp);
+                        });
          outstr.str("");
          for(auto i = 0; i < 3; i++){
             outstr << result[i] << "\n";

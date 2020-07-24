@@ -45,18 +45,4 @@ TEST_CASE("Construct time object just after midnight","[date_time],[midnight]"){
       }
    }
 }
-
-TEST_CASE("Construct tuple with time object and int","[date_time],[tuple]"){
-   boost::tuple<ptime,int> time_height_pair(ptime(date(2020,Jul,16),hours(2)+minutes(6)), 63);
-   std::string ts("20200716T0206");
-   std::string hs("63");
-   boost::tuple<string,string> tupstr = boost::make_tuple(ts,hs);
-   REQUIRE( time_height_pair == string2datetime_height(tupstr));
-   SECTION("Modify tuple"){
-      boost::tuple<ptime,int> time_height_other_place(ptime(date(2020,Jul,16),hours(1)+minutes(41)),63*0.56);
-      new_datetime_height(minutes(-25),0.56,time_height_pair);
-      std::cout << to_simple_string(time_height_pair.get<0>()) << "::" << time_height_pair.get<1>() << '\n';
-      REQUIRE( time_height_other_place == time_height_pair);
-   }
-}
 #endif // end TEST_PROJECT_SCAFFOLDING_HPP
