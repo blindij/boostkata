@@ -54,6 +54,20 @@ TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
             outstr << result[i] << "\n";
          }
          REQUIRE( outstr.str() == "(2020-Jul-16 02:06:00 63)\n(2020-Jul-16 08:30:00 33)\n(2020-Jul-16 14:41:00 60)\n" );
+         SECTION("Transform tuple to tuple with new time/height pairs"){
+            std::vector<boost::tuple<boost::posix_time::ptime, int>> transformed;
+            std::transform(result.begin(),
+                           result.end(),
+                           std::back_inserter(transformed),
+                           [](auto & x){
+                                return boost::make_tuple(get<0>(x) + boost::posix_time::minutes(-25), get<1>(x) = get<1>(x) * 0.56);
+                              });
+            outstr.str("");
+            for(auto i = 0; i < 3; i++){
+               outstr << transformed[i] << "\n";
+            }
+            REQUIRE( outstr.str() == "(2020-Jul-16 01:41:00 35)\n(2020-Jul-16 08:05:00 18)\n(2020-Jul-16 14:16:00 33)\n");
+         }
       }
    }
 }
