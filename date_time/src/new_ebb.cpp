@@ -13,6 +13,8 @@
 using namespace std;
 // Make an alias for boost::program_options
 namespace opt = boost::program_options;
+namespace pt = boost::posix_time;
+namespace tp = boost::tuples;
 
 int main(int argc, char *argv[]){
    // Describe options
@@ -47,12 +49,65 @@ int main(int argc, char *argv[]){
    try {
       opt::store(opt::parse_config_file<char>("ebb.cfg",desc), vm);
    } catch (const opt::reading_file& e) {
-      std::cout << "Failed to open file 'ebb.cfg': " << e.what();
+      std::cerr << "Failed to open file 'ebb.cfg': " << e.what() << std::endl;
    }
-   opt::notify(vm);
-   if (vm.count("primary")){
-      std::cout << "Standard harbours is " << vm["primary"].as<std::string>() <<   ".\n";
-   }
+   double heightfactor = vm["heightfactor"].as<double>();
+   int distance_delta = vm["delta"].as<int>();
+   pt::minutes adjust_min(vm["minutes"].as<int>());
    std::cout << "Correction in minutes: " << vm["minutes"].as<int>() << " Height correction factor: " << vm["heightfactor"].as<double>() << std::endl;
+   ostringstream outstr;
+   string filename = vm["primary"].as<string>() + "iso.txt";
+   string outputfile = vm["secondary"].as<string>() + "iso.txt";
+   vector<string> timepoints;
+   vector<tp::tuple<string,string>> timepoint_height_vector;
+   vector<tp::tuple<pt::ptime, int>> result;
+
+   size_t number_of_entries = read_iso_file(filename, timepoints);
+   timepoints.pop_back();
+
+// split the string in timepoint and height 
+   std::string pat("(\\d{8}T\\d{4}):(\\d{2})");
+   transform(timepoints.begin(), timepoints.end(),
+               std::back_inserter(timepoint_height_vector),
+               [&pat](auto & x){
+               boost::regex reg(pat, boost::regex::perl);
+               boost::smatch what;
+               std::string part_one,part_two;
+               if (boost::regex_match(x,what,reg, boost::match_extra)){
+                  part_one = what[1];
+                  part_two = what[2];
+               } 
+               
+               return boost::make_tuple(part_one, part_two);
+               });
+
+
+// create boost::posix_time::minutes out of timepoint(string)
+   std::transform(timepoint_height_vector.begin(),
+                  timepoint_height_vector.end(),
+                  std::back_inserter(result), 
+                  [](auto & x){
+                     pt::ptime t1(pt::from_iso_string(get<0>(x)));
+                     istringstream height(get<1>(x));
+                     int tmp;
+                     height >> tmp;
+                     return boost::make_tuple(t1, tmp);
+                   });
+
+// transform the timepoint and height
+//
+   vector<boost::tuple<pt::ptime, int>> transformed;
+   transform(result.begin(),
+             result.end(),
+             std::back_inserter(transformed),
+             [&heightfactor, &distance_delta, & adjust_min](auto & x){
+                 return boost::make_tuple(get<0>(x) + adjust_min,  get<1>(x) * heightfactor + distance_delta);
+                              });
+   cout << number_of_entries - 1<< " read from " << filename << std::endl;
+   std::cout << "Correction in minutes: " << vm["minutes"].as<int>() << std::endl;
+   std::cout << "Height correction factor: " << vm["heightfactor"].as<double>() << std::endl;
+   if (vm["delta"].as<int>() != 0) std::cout << "Additional height to add: [cm] " << vm["delta"].as<int>() << std::endl;
+   number_of_entries  = write_iso_file(outputfile, transformed);
+   cout << number_of_entries << " written to " << outputfile << std::endl;
    return 0;
 }
