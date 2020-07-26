@@ -25,6 +25,12 @@ TEST_CASE("Read from helgeroaiso.txt","[date_time][fileread]"){
   }
 }
 
+TEST_CASE("Try to read file, but throw exception","[date_time],[exception]"){
+   string file("testfile.txt");
+   vector<string> all_timepoints;
+   REQUIRE_THROWS( read_iso_file(file, all_timepoints));
+}
+
 TEST_CASE("Read all entries from helgeroaiso.txt", "[date_time][all]"){
    string file("helgeroaiso.txt");
    vector<string> all_timepoints;

@@ -13,6 +13,7 @@ namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
 size_t read_iso_file(std::string& filename,std::vector<std::string>& vecent){
+   if ( !fs::exists(filename)) throw exception();
    string result;
    io::stream_buffer<io::file_source> buf(filename);
    istream in(&buf);
