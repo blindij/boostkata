@@ -13,17 +13,19 @@ namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
 size_t read_iso_file(std::string& filename,std::vector<std::string>& vecent){
-   if ( !fs::exists(filename)) throw exception();
+   if ( fs::exists(filename)){ 
    string result;
    io::stream_buffer<io::file_source> buf(filename);
    istream in(&buf);
-   if (fs::exists(filename)){
       while(in){
          getline(in,result);
          vecent.push_back(result);
       }
-   }
    return vecent.size();
+   } else {
+      throw std::runtime_error("The file do not exists");
+      return 0;
+   }
 }
 
 size_t write_iso_file(std::string& filename, std::vector<boost::tuple<pt::ptime, int>>& timeheightobjects){
