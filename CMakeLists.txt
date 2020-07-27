@@ -23,6 +23,9 @@ add_subdirectory(src)
 # ---- add subdirectory with tests ----
 add_subdirectory(test)
 
+# ---- add subdirectory regex
+add_subdirectory(regex)
+
 # ---- add subdirectory date_time
 add_subdirectory(date_time)
 
