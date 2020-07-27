@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
    // std::cout << "Correction in minutes: " << vm["minutes"].as<int>() << " Height correction factor: " << vm["heightfactor"].as<double>() << std::endl;
    std::cout << "Correction in minutes: " << adjust_min << " Height correction factor: " << heightfactor << std::endl;
    string filename = vm["primary"].as<string>() + "iso.txt";
-   string outputfile = vm["secondary"].as<string>() + "iso.txt";
+   string outputfile = vm["secondary"].as<string>() + ".txt";
    vector<string> timepoints;
    vector<tp::tuple<string,string>> timepoint_height_vector;
    vector<tp::tuple<pt::ptime, int>> result;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]){
    timepoints.pop_back();
 
 // split the string in timepoint and height 
-   std::string pat("(\\d{8}T\\d{4}):(\\d{2})");
+   std::string pat("(\\d{8}T\\d{4}):(\\d{2,3})");
    transform(timepoints.begin(), timepoints.end(),
                std::back_inserter(timepoint_height_vector),
                [&pat](auto & x){
@@ -78,7 +78,6 @@ int main(int argc, char *argv[]){
                   part_one = what[1];
                   part_two = what[2];
                } 
-               
                return tp::make_tuple(part_one, part_two);
                });
 
