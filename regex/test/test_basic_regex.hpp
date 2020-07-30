@@ -7,6 +7,7 @@
 
 #include <string>
 #include <boost/tuple/tuple_comparison.hpp>
+#include <boost/tuple/tuple_io.hpp>
 
 std::string marys_story("Mary had a little lamb.\n"
                         "And everywhere that Mary\n"
@@ -117,10 +118,16 @@ std::string marys_modified_story("M{a}ry h{a}d {a} little l{a}mb.\n"
 REQUIRE(re_show("(a+)", marys_story) == marys_modified_story);
 }
 
-TEST_CASE("returning a tuple","[tuple]"){
+TEST_CASE("returning a tuple of epcoch and height","[regex][tuple][date]"){
    std::string result("20200716T0207:63");
    boost::tuple<std::string, std::string> result_tuple("20200716T0207","63");
    // boost::tuple<std::string, std::string> result_tuple("test1","test2");
    REQUIRE( result_tuple == re_pair("(\\d{8}T\\d{4}):(\\d{2})", result));
+}
+
+TEST_CASE("return a tuple of strings", "[regex][tuple][strings]"){
+   std::string  result("palpable (adj) that is easily noticed by the mind or senses");
+   boost::tuple<std::string,std::string> result_tuple("palpable", "(adj) that is easily noticed by the mind or senses");
+   REQUIRE( result_tuple == re_pair("(\\w{1,}) (.*)",result) );
 }
 #endif //REGEXPCPP_TEST_BASIC_REGEXP_HPP
