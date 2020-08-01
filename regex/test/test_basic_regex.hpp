@@ -130,4 +130,29 @@ TEST_CASE("return a tuple of strings", "[regex][tuple][strings]"){
    boost::tuple<std::string,std::string> result_tuple("palpable", "(adj) that is easily noticed by the mind or senses");
    REQUIRE( result_tuple == re_pair("(\\w{1,}) (.*)",result) );
 }
+
+TEST_CASE("return a vector containing tuples of strings","[regex][vector][tuple][strings]"){
+   std::ostringstream outstr;
+   std::vector<std::string> allentries{"palpable (adj) that is easily noticed by the mind or senses",
+                                "explanation (noun) a statement, fact, or situation that tells you why sth happened; a reason given for sth",
+                                "reverent (adj) a statement, fact, or situation that tells you why sth happened; a reason given for sth"};
+   std::vector<boost::tuple<std::string,std::string>> tuple_vector;
+      std::string pat("(\\w{1,}) (.*)");
+      transform(allentries.begin(), allentries.end(),
+                  std::back_inserter(tuple_vector),
+                  [&pat](auto & x){
+                  boost::regex reg(pat, boost::regex::perl);
+                  boost::smatch what;
+                  std::string part_one,part_two;
+                  if (boost::regex_match(x,what,reg, boost::match_extra)){
+                     part_one = what[1];
+                     part_two = what[2];
+                  } 
+                  return boost::make_tuple(part_one, part_two);
+                  });
+      for(auto  x : tuple_vector) outstr << x;
+      REQUIRE( outstr.str() == "(palpable (adj) that is easily noticed by the mind or senses)"
+                               "(explanation (noun) a statement, fact, or situation that tells you why sth happened; a reason given for sth)"
+                               "(reverent (adj) a statement, fact, or situation that tells you why sth happened; a reason given for sth)" );
+}
 #endif //REGEXPCPP_TEST_BASIC_REGEXP_HPP
