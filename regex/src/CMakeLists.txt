@@ -9,3 +9,10 @@ target_link_libraries(tenwords.x
                       Boost::random
 )
 
+add_executable(password.x
+               password.cpp
+)
+
+target_link_libraries(password.x
+                      Boost::random
+)
