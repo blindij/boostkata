@@ -36,7 +36,11 @@ int main(){
       boost::random::uniform_int_distribution<> dist(0,number_of_entries);
       std::cout << "Number of entries: " << number_of_entries << std::endl;
       for (auto i = 0; i < 10; ++i) {
-         std::cout << allentries[dist(rng)] << std::endl;
+         auto j = dist(rng);
+         if (tuple_vector[j].get<0>().size() == 0)
+            std::cout << allentries[j] << std::endl;
+         else
+            std::cout << tuple_vector[j].get<0>() << ", size: " << tuple_vector[j].get<0>().size() << std::endl;
       }
 
       return 0;
