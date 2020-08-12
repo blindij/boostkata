@@ -5,6 +5,7 @@
 #include <boost/any.hpp>
 #include <boost/variant.hpp>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
